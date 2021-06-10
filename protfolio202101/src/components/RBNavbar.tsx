@@ -5,6 +5,7 @@ import NavDropdown from 'react-bootstrap/NavDropdown'
 import styled from 'styled-components'
 import { Envelope } from 'react-bootstrap-icons'
 import './RBNavbar.css'
+import { clearTimeout, setTimeout } from 'timers'
 
 const NavIcon = styled(Nav.Link)`
     font-size: 14px;
@@ -98,8 +99,13 @@ const StyledNavbar = styled(Navbar)`
 const RBNavbar = () => {
     const [isDropdownShown, setIsDropdownShown] = useState<boolean>(false)
 
-    const onHoverDropdown = (boo: boolean) => {
-        setIsDropdownShown(boo)
+    let timeout: NodeJS.Timeout;
+    const onMouseEnterDropedown = () => {
+        clearTimeout(timeout)
+        setIsDropdownShown(true)
+    }
+    const onMouseLeaveDropdown = () => {
+        timeout = setTimeout(() => { setIsDropdownShown(false); }, 500)
     }
 
     return (
@@ -147,8 +153,8 @@ const RBNavbar = () => {
                             title="Dropdown"
                             id="nav-dropdown"
                             className="py-3 px-0 mx-3"
-                            onMouseEnter={() => onHoverDropdown(true)}
-                            onMouseLeave={() => onHoverDropdown(false)}
+                            onMouseEnter={() => onMouseEnterDropedown()}
+                            onMouseLeave={() => onMouseLeaveDropdown()}
                             show={isDropdownShown}
                         >
                             <StyledNavDropdownItem eventKey="4.1">
